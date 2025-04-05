@@ -1,0 +1,66 @@
+<form class="{{cssClass}} add2e" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1><input name="name" type="text" value="{{item.name}}" placeholder="Spell Name" /></h1>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="attributes">Attributes</a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab-content" data-group="primary" data-tab="description">
+      <textarea name="system.description">{{system.description}}</textarea>
+    </div>
+
+    <div class="tab-content" data-group="primary" data-tab="attributes">
+      <div class="form-group">
+        <label>Level</label>
+        <input type="number" name="system.level" value="{{system.level}}" min="1" max="9" placeholder="1" />
+      </div>
+      <div class="form-group">
+        <label>School</label>
+        <select name="system.school">
+          {{#select system.school}}
+          <option value=""></option>
+          <option value="abjuration">Abjuration</option>
+          <option value="alteration">Alteration</option>
+          <option value="conjuration">Conjuration/Summoning</option>
+          <option value="divination">Divination</option>
+          <option value="enchantment">Enchantment/Charm</option>
+          <option value="illusion">Illusion/Phantasm</option>
+          <option value="invocation">Invocation/Evocation</option>
+          <option value="necromancy">Necromancy</option>
+          {{/select}}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Casting Time</label>
+        <input type="text" name="system.castingTime" value="{{system.castingTime}}" placeholder="1 round" />
+      </div>
+      <div class="form-group">
+        <label>Range</label>
+        <input type="text" name="system.range" value="{{system.range}}" placeholder="" />
+      </div>
+      <div class="form-group">
+        <label>Duration</label>
+        <input type="text" name="system.duration" value="{{system.duration}}" placeholder="" />
+      </div>
+      <div class="form-group">
+        <label>Area of Effect</label>
+        <input type="text" name="system.area" value="{{system.area}}" placeholder="" />
+      </div>
+      <div class="form-group">
+        <label>Components</label>
+        <input type="text" name="system.components" value="{{system.components}}" placeholder="V, S, M" />
+      </div>
+      <div class="form-group">
+        <label>Saving Throw</label>
+        <input type="text" name="system.savingThrow" value="{{system.savingThrow}}" placeholder="None" />
+      </div>
+    </div>
+  </section>
+</form>

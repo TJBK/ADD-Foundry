@@ -1,0 +1,389 @@
+<form class="{{cssClass}} add2e" autocomplete="off">
+  <!-- Sheet Header -->
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    <div class="header-fields">
+      <h1><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+      <div class="header-details">
+        <div class="form-group">
+          <label>Race</label>
+          <input type="text" name="system.details.race" value="{{system.details.race}}" placeholder="Race" />
+        </div>
+        <div class="form-group">
+          <label>Class</label>
+          <input type="text" name="system.details.class" value="{{system.details.class}}" placeholder="Class" />
+        </div>
+        <div class="form-group">
+          <label>Alignment</label>
+          <input type="text" name="system.details.alignment" value="{{system.details.alignment}}"
+            placeholder="Alignment" />
+        </div>
+        <div class="form-group">
+          <label>Level</label>
+          <input type="number" name="system.details.level" value="{{system.details.level}}" placeholder="1" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item active" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="combat">Combat</a>
+    <a class="item" data-tab="inventory">Inventory</a>
+    <a class="item" data-tab="proficiencies">Proficiencies</a>
+    <a class="item" data-tab="spells">Spells</a>
+    <a class="item" data-tab="notes">Notes</a>
+  </nav>
+
+  <!-- Sheet Body -->
+  <section class="sheet-body">
+    <!-- Attributes Tab -->
+    <div class="tab-content active" data-tab="attributes">
+      <!-- Ability Scores -->
+      <div class="ability-scores">
+        <!-- STR -->
+        <div class="ability-score" data-ability="str">
+          <div class="ability-name">STR</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.str.value" value="{{system.abilities.str.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+          {{#if system.abilities.str.exceptional}}
+          <div class="exceptional-strength">
+            <label>/</label>
+            <input type="number" name="system.abilities.str.exceptional" value="{{system.abilities.str.exceptional}}"
+              min="0" max="100" placeholder="0" />
+          </div>
+          {{/if}}
+        </div>
+
+        <!-- DEX -->
+        <div class="ability-score" data-ability="dex">
+          <div class="ability-name">DEX</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.dex.value" value="{{system.abilities.dex.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- CON -->
+        <div class="ability-score" data-ability="con">
+          <div class="ability-name">CON</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.con.value" value="{{system.abilities.con.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- INT -->
+        <div class="ability-score" data-ability="int">
+          <div class="ability-name">INT</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.int.value" value="{{system.abilities.int.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- WIS -->
+        <div class="ability-score" data-ability="wis">
+          <div class="ability-name">WIS</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.wis.value" value="{{system.abilities.wis.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- CHA -->
+        <div class="ability-score" data-ability="cha">
+          <div class="ability-name">CHA</div>
+          <div class="ability-value">
+            <input type="number" name="system.abilities.cha.value" value="{{system.abilities.cha.value}}" min="1"
+              max="25" placeholder="10" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience Points -->
+      <div class="xp-section">
+        <div class="form-group">
+          <label>Experience Points</label>
+          <input type="number" name="system.details.xp.value" value="{{system.details.xp.value}}" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label>Next Level</label>
+          <input type="number" name="system.details.xp.max" value="{{system.details.xp.max}}" placeholder="2000" />
+        </div>
+      </div>
+
+      <!-- Character Details -->
+      <div class="character-details">
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" name="system.details.age" value="{{system.details.age}}" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label>Height</label>
+          <input type="text" name="system.details.height" value="{{system.details.height}}" placeholder="5'10&quot;" />
+        </div>
+        <div class="form-group">
+          <label>Weight</label>
+          <input type="text" name="system.details.weight" value="{{system.details.weight}}" placeholder="170 lbs" />
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <input type="text" name="system.details.gender" value="{{system.details.gender}}" placeholder="" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Combat Tab -->
+    <div class="tab-content" data-tab="combat">
+      <!-- Combat Stats -->
+      <div class="combat-stats">
+        <!-- HP -->
+        <div class="combat-stat">
+          <div class="stat-name">Hit Points</div>
+          <div class="stat-value">
+            <input type="number" name="system.combat.hp.value" value="{{system.combat.hp.value}}" placeholder="10" />
+            <span>/</span>
+            <input type="number" name="system.combat.hp.max" value="{{system.combat.hp.max}}" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- AC -->
+        <div class="combat-stat">
+          <div class="stat-name">Armor Class</div>
+          <div class="stat-value">
+            <input type="number" name="system.combat.ac.value" value="{{system.combat.ac.value}}" placeholder="10" />
+          </div>
+        </div>
+
+        <!-- THAC0 -->
+        <div class="combat-stat thac0">
+          <div class="stat-name">THAC0</div>
+          <div class="stat-value">
+            <input type="number" name="system.combat.thac0.value" value="{{system.combat.thac0.value}}"
+              placeholder="20" />
+          </div>
+        </div>
+
+        <!-- Initiative -->
+        <div class="combat-stat">
+          <div class="stat-name">Initiative Mod</div>
+          <div class="stat-value">
+            <input type="number" name="system.combat.initiative.value" value="{{system.combat.initiative.value}}"
+              placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Saving Throws -->
+      <h3 class="section-header">Saving Throws</h3>
+      <div class="saving-throws">
+        <!-- Paralyzation/Poison/Death -->
+        <div class="save" data-save="paralyze">
+          <div class="save-name">Para/Poison/Death</div>
+          <div class="save-value">
+            <input type="number" name="system.saves.paralyze.value" value="{{system.saves.paralyze.value}}"
+              placeholder="0" />
+          </div>
+        </div>
+
+        <!-- Rod/Staff/Wand -->
+        <div class="save" data-save="poison">
+          <div class="save-name">Rod/Staff/Wand</div>
+          <div class="save-value">
+            <input type="number" name="system.saves.poison.value" value="{{system.saves.poison.value}}"
+              placeholder="0" />
+          </div>
+        </div>
+
+        <!-- Petrification/Polymorph -->
+        <div class="save" data-save="breath">
+          <div class="save-name">Breath</div>
+          <div class="save-value">
+            <input type="number" name="system.saves.breath.value" value="{{system.saves.breath.value}}"
+              placeholder="0" />
+          </div>
+        </div>
+
+        <!-- Breath Weapon -->
+        <div class="save" data-save="magical">
+          <div class="save-name">Magical Device</div>
+          <div class="save-value">
+            <input type="number" name="system.saves.magical.value" value="{{system.saves.magical.value}}"
+              placeholder="0" />
+          </div>
+        </div>
+
+        <!-- Spell -->
+        <div class="save" data-save="spell">
+          <div class="save-name">Spell</div>
+          <div class="save-value">
+            <input type="number" name="system.saves.spell.value" value="{{system.saves.spell.value}}" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Weapons -->
+      <h3 class="section-header">Weapons</h3>
+      <ol class="items-list">
+        {{#each actor.items as |item id|}}
+        {{#if (eq item.type "weapon")}}
+        <li class="item" data-item-id="{{id}}">
+          <img src="{{item.img}}" width="24" height="24" />
+          <h4 class="item-name">{{item.name}}</h4>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/if}}
+        {{/each}}
+      </ol>
+    </div>
+
+    <!-- Inventory Tab -->
+    <div class="tab-content" data-tab="inventory">
+      <!-- Wealth -->
+      <div class="wealth-section">
+        <h3 class="section-header">Currency</h3>
+        <div class="currency-grid">
+          <div class="form-group">
+            <label>PP</label>
+            <input type="number" name="system.wealth.pp" value="{{system.wealth.pp}}" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>GP</label>
+            <input type="number" name="system.wealth.gp" value="{{system.wealth.gp}}" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>EP</label>
+            <input type="number" name="system.wealth.ep" value="{{system.wealth.ep}}" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>SP</label>
+            <input type="number" name="system.wealth.sp" value="{{system.wealth.sp}}" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>CP</label>
+            <input type="number" name="system.wealth.cp" value="{{system.wealth.cp}}" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Equipment List -->
+      <h3 class="section-header">Equipment</h3>
+      <ol class="items-list">
+        <div class="item-header">
+          <div class="item-name">Name</div>
+          <div class="item-quantity">Qty</div>
+          <div class="item-weight">Weight</div>
+          <div class="item-controls"></div>
+        </div>
+        {{#each actor.items as |item id|}}
+        {{#if (eq item.type "equipment")}}
+        <li class="item" data-item-id="{{id}}">
+          <div class="item-name">
+            <img src="{{item.img}}" width="24" height="24" />
+            <h4>{{item.name}}</h4>
+          </div>
+          <div class="item-quantity">{{item.system.quantity}}</div>
+          <div class="item-weight">{{item.system.weight}}</div>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/if}}
+        {{/each}}
+      </ol>
+
+      <!-- Armor List -->
+      <h3 class="section-header">Armor</h3>
+      <ol class="items-list">
+        {{#each actor.items as |item id|}}
+        {{#if (eq item.type "armor")}}
+        <li class="item" data-item-id="{{id}}">
+          <img src="{{item.img}}" width="24" height="24" />
+          <h4 class="item-name">{{item.name}} (AC {{item.system.ac}})</h4>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/if}}
+        {{/each}}
+      </ol>
+    </div>
+
+    <!-- Proficiencies Tab -->
+    <div class="tab-content" data-tab="proficiencies">
+      <!-- Weapon Proficiencies -->
+      <h3 class="section-header">Weapon Proficiencies</h3>
+      <ol class="items-list">
+        {{#each actor.items as |item id|}}
+        {{#if (and (eq item.type "proficiency") (eq item.system.type "weapon"))}}
+        <li class="item" data-item-id="{{id}}">
+          <h4 class="item-name">{{item.name}}</h4>
+          <div class="item-slots">Slots: {{item.system.slots}}</div>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Proficiency"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Proficiency"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/if}}
+        {{/each}}
+      </ol>
+
+      <!-- Non-Weapon Proficiencies -->
+      <h3 class="section-header">Non-Weapon Proficiencies</h3>
+      <ol class="items-list">
+        {{#each actor.items as |item id|}}
+        {{#if (and (eq item.type "proficiency") (eq item.system.type "nonweapon"))}}
+        <li class="item" data-item-id="{{id}}">
+          <h4 class="item-name">{{item.name}}</h4>
+          <div class="item-slots">Slots: {{item.system.slots}}</div>
+          <div class="item-controls">
+            <a class="item-control item-edit" title="Edit Proficiency"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" title="Delete Proficiency"><i class="fas fa-trash"></i></a>
+          </div>
+        </li>
+        {{/if}}
+        {{/each}}
+      </ol>
+    </div>
+
+    <!-- Spells Tab -->
+    <div class="tab-content" data-tab="spells">
+      <!-- Spell Levels -->
+      {{#each spellLevels as |spellLevel lvl|}}
+      <div class="spell-level">
+        <h3 class="section-header">Level {{lvl}} Spells</h3>
+        <ol class="items-list">
+          {{#each spellLevel as |item id|}}
+          <li class="item" data-item-id="{{id}}">
+            <img src="{{item.img}}" width="24" height="24" />
+            <h4 class="item-name">{{item.name}}</h4>
+            <div class="item-controls">
+              <a class="item-control item-edit" title="Edit Spell"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete" title="Delete Spell"><i class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Notes Tab -->
+    <div class="tab-content" data-tab="notes">
+      <h3 class="section-header">Biography</h3>
+      <textarea name="system.details.biography">{{system.details.biography}}</textarea>
+
+      <h3 class="section-header">Notes</h3>
+      <textarea name="system.notes">{{system.notes}}</textarea>
+    </div>
+  </section>
+</form>

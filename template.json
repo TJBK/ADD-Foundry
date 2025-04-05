@@ -1,0 +1,178 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc",
+      "monster"
+    ],
+    "templates": {
+      "base": {
+        "abilities": {
+          "str": {
+            "value": 10,
+            "exceptional": 0
+          },
+          "dex": {
+            "value": 10
+          },
+          "con": {
+            "value": 10
+          },
+          "int": {
+            "value": 10
+          },
+          "wis": {
+            "value": 10
+          },
+          "cha": {
+            "value": 10
+          }
+        }
+      },
+      "details": {
+        "race": "",
+        "class": "",
+        "alignment": "",
+        "level": 1,
+        "xp": {
+          "value": 0,
+          "min": 0,
+          "max": 2000
+        },
+        "age": 0,
+        "height": "",
+        "weight": "",
+        "gender": "",
+        "biography": ""
+      },
+      "combat": {
+        "hp": {
+          "value": 10,
+          "min": 0,
+          "max": 10
+        },
+        "ac": {
+          "value": 10
+        },
+        "thac0": {
+          "value": 20
+        },
+        "initiative": {
+          "value": 0
+        }
+      },
+      "saves": {
+        "paralyze": {
+          "value": 0
+        },
+        "poison": {
+          "value": 0
+        },
+        "breath": {
+          "value": 0
+        },
+        "magical": {
+          "value": 0
+        },
+        "spell": {
+          "value": 0
+        }
+      }
+    },
+    "character": {
+      "templates": [
+        "base",
+        "details",
+        "combat",
+        "saves"
+      ],
+      "proficiencies": {
+        "weapons": [],
+        "nonweapon": []
+      },
+      "wealth": {
+        "pp": 0,
+        "gp": 0,
+        "ep": 0,
+        "sp": 0,
+        "cp": 0
+      },
+      "notes": ""
+    },
+    "npc": {
+      "templates": [
+        "base",
+        "details",
+        "combat",
+        "saves"
+      ]
+    },
+    "monster": {
+      "templates": [
+        "base",
+        "combat",
+        "saves"
+      ],
+      "cr": 0,
+      "treasure": "",
+      "climate": "",
+      "frequency": "",
+      "organization": "",
+      "activity": "",
+      "diet": "",
+      "special": []
+    }
+  },
+  "Item": {
+    "types": [
+      "weapon",
+      "armor",
+      "equipment",
+      "spell",
+      "proficiency"
+    ],
+    "templates": {
+      "base": {
+        "description": "",
+        "quantity": 1,
+        "weight": 0
+      }
+    },
+    "weapon": {
+      "templates": [
+        "base"
+      ],
+      "damage": "1d6",
+      "type": "melee",
+      "speed": 0,
+      "range": ""
+    },
+    "armor": {
+      "templates": [
+        "base"
+      ],
+      "ac": 10,
+      "type": "light"
+    },
+    "equipment": {
+      "templates": [
+        "base"
+      ],
+      "cost": 0
+    },
+    "spell": {
+      "level": 1,
+      "school": "",
+      "components": "",
+      "duration": "",
+      "range": "",
+      "area": "",
+      "castingTime": "",
+      "savingThrow": ""
+    },
+    "proficiency": {
+      "type": "weapon",
+      "slots": 1
+    }
+  }
+}

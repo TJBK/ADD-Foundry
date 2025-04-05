@@ -1,0 +1,48 @@
+<form class="{{cssClass}} add2e" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1><input name="name" type="text" value="{{item.name}}" placeholder="Proficiency Name" /></h1>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="attributes">Attributes</a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab-content" data-group="primary" data-tab="description">
+      <textarea name="system.description">{{system.description}}</textarea>
+    </div>
+
+    <div class="tab-content" data-group="primary" data-tab="attributes">
+      <div class="form-group">
+        <label>Type</label>
+        <select name="system.type">
+          {{#select system.type}}
+          <option value="weapon">Weapon</option>
+          <option value="nonweapon">Non-Weapon</option>
+          {{/select}}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Slots Required</label>
+        <input type="number" name="system.slots" value="{{system.slots}}" min="1" placeholder="1" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="system.category">
+          {{#select system.category}}
+          <option value=""></option>
+          <option value="general">General</option>
+          <option value="priest">Priest</option>
+          <option value="rogue">Rogue</option>
+          <option value="warrior">Warrior</option>
+          <option value="wizard">Wizard</option>
+          {{/select}}
+        </select>
+      </div>
+    </div>
+  </section>
+</form>
