@@ -17,16 +17,7 @@ export class ADD2EActor extends Actor {
     const flags = actorData.flags || {};
 
     // Make sure we have the basic structures to avoid errors
-    if (!system.details) system.details = {};
-    if (!system.abilities) system.abilities = {};
-    if (!system.combat) system.combat = {};
-    if (!system.saves) system.saves = {};
-
-    // Initialize properties if not present
-    for (let abl of ["str", "dex", "con", "int", "wis", "cha"]) {
-      if (!system.abilities[abl]) system.abilities[abl] = {};
-      if (!system.abilities[abl].value) system.abilities[abl].value = 10;
-    }
+    this._ensureDefaultFields(system);
 
     // Prepare character data
     if (actorData.type === 'character') {
@@ -41,6 +32,71 @@ export class ADD2EActor extends Actor {
     // Prepare monster data
     if (actorData.type === 'monster') {
       this._prepareMonsterData(actorData);
+    }
+  }
+
+  /**
+   * Make sure basic data structures exist to prevent errors
+   * @param {Object} system The system data object
+   * @private
+   */
+  _ensureDefaultFields(system) {
+    if (!system.details) system.details = {};
+    if (!system.abilities) system.abilities = {};
+    if (!system.combat) system.combat = {};
+    if (!system.saves) system.saves = {};
+    if (!system.wealth) system.wealth = {};
+
+    // Initialize ability scores
+    for (let abl of ["str", "dex", "con", "int", "wis", "cha"]) {
+      if (!system.abilities[abl]) system.abilities[abl] = {};
+      if (system.abilities[abl].value === undefined || system.abilities[abl].value === null) {
+        system.abilities[abl].value = 10;
+      }
+    }
+
+    // Initialize exceptional strength if enabled
+    if (game.settings.get("add2e", "useExceptionalStrength")) {
+      if (!system.abilities.str.exceptional) system.abilities.str.exceptional = 0;
+    }
+
+    // Initialize HP
+    if (!system.combat.hp) system.combat.hp = {};
+    if (!system.combat.hp.value) system.combat.hp.value = 10;
+    if (!system.combat.hp.max) system.combat.hp.max = 10;
+
+    // Initialize AC
+    if (!system.combat.ac) system.combat.ac = {};
+    if (!system.combat.ac.value) system.combat.ac.value = 10;
+
+    // Initialize THAC0
+    if (!system.combat.thac0) system.combat.thac0 = {};
+    if (!system.combat.thac0.value) system.combat.thac0.value = 20;
+
+    // Initialize initiative
+    if (!system.combat.initiative) system.combat.initiative = {};
+    if (!system.combat.initiative.value) system.combat.initiative.value = 0;
+
+    // Initialize saving throws
+    for (let save of ["paralyze", "poison", "breath", "magical", "spell"]) {
+      if (!system.saves[save]) system.saves[save] = {};
+      if (!system.saves[save].value) system.saves[save].value = 20;
+    }
+
+    // Initialize XP
+    if (!system.details.xp) system.details.xp = {};
+    if (!system.details.xp.value) system.details.xp.value = 0;
+    if (!system.details.xp.max) system.details.xp.max = 2000;
+
+    // Initialize level
+    if (!system.details.level) system.details.level = 1;
+
+    // Initialize wealth
+    if (!system.wealth) system.wealth = {};
+    for (let currency of ["pp", "gp", "ep", "sp", "cp"]) {
+      if (system.wealth[currency] === undefined || system.wealth[currency] === null) {
+        system.wealth[currency] = 0;
+      }
     }
   }
 
@@ -94,6 +150,7 @@ export class ADD2EActor extends Actor {
 
     // Monsters use simplified calculations
     // You might want to implement these based on HD or other monster stats
+    this._calculateAbilityModifiers(system);
   }
 
   /**
@@ -324,5 +381,20 @@ export class ADD2EActor extends Actor {
     if (!system.combat.hp.value || system.combat.hp.value > system.combat.hp.max) {
       system.combat.hp.value = system.combat.hp.max;
     }
+  }
+
+  /**
+   * @override
+   * Get an object of rollable data for the Actor
+   */
+  getRollData() {
+    const data = super.getRollData();
+
+    // Include ability modifiers for rolls
+    if (this.system.abilityMods) {
+      data.abilityMods = this.system.abilityMods;
+    }
+
+    return data;
   }
 }

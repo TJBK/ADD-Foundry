@@ -68,13 +68,13 @@
 }
 
 /* Tabs */
-.add2e .tabs {
+.add2e .sheet-tabs {
   display: flex;
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 10px;
 }
 
-.add2e .tabs .item {
+.add2e .sheet-tabs .item {
   flex: 1;
   text-align: center;
   padding: 5px;
@@ -85,7 +85,7 @@
   margin-right: 2px;
 }
 
-.add2e .tabs .item.active {
+.add2e .sheet-tabs .item.active {
   background: var(--color-primary);
   font-weight: bold;
 }
@@ -96,17 +96,16 @@
   overflow-y: auto;
 }
 
-.add2e .tab-content {
+.add2e .tab {
   padding: 10px;
 }
 
-/* Hide inactive tabs */
-.add2e .tab-content {
+/* Important: Updated tab visibility rules to work with Foundry's built-in tab system */
+.add2e .tab:not(.active) {
   display: none;
 }
 
-/* Show active tab */
-.add2e .tab-content.active {
+.add2e .tab.active {
   display: block;
 }
 

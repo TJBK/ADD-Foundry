@@ -117,46 +117,9 @@ Hooks.on("renderADD2ECharacterSheet", (app, html, data) => {
     html.addClass("dark-mode");
   }
 
-  // Debug tab system
-  const tabs = html.find('.sheet-tabs');
-  const tabContent = html.find('.tab-content');
+  // IMPORTANT: Do not manually manipulate tab classes here
+  // Let Foundry's built-in tab system handle it
 
-  console.log(`ADD2E | Found ${tabs.length} tab navigation elements`);
-  console.log(`ADD2E | Found ${tabContent.length} tab content elements`);
-
-  // Manually ensure the Attributes tab is active on initial render
-  html.find('.tab-content[data-tab="attributes"]').addClass('active');
-  html.find('.sheet-tabs .item[data-tab="attributes"]').addClass('active');
-
-  // Add specific form input event listeners for saving data
-  html.find('input').change(event => {
-    const input = event.currentTarget;
-    const formGroup = input.closest(".form-group");
-    const value = input.value;
-
-    // Use the core FormDataExtended logic to get and validate data
-    let formData = {};
-    try {
-      formData[input.name] = value;
-      app.object.update(formData);
-      console.log("ADD2E | Updated field:", input.name, "with value:", value);
-    } catch (err) {
-      console.error("ADD2E | Error updating field:", err);
-    }
-  });
-
-  // For textareas
-  html.find('textarea').change(event => {
-    const textarea = event.currentTarget;
-    const value = textarea.value;
-
-    let formData = {};
-    try {
-      formData[textarea.name] = value;
-      app.object.update(formData);
-      console.log("ADD2E | Updated textarea:", textarea.name);
-    } catch (err) {
-      console.error("ADD2E | Error updating textarea:", err);
-    }
-  });
+  // NOTE: We're REMOVING the explicit tab activation code
+  // that was conflicting with Foundry's tab system
 });

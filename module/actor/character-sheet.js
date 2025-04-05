@@ -13,56 +13,101 @@ export class ADD2ECharacterSheet extends ActorSheet {
         navSelector: ".sheet-tabs",
         contentSelector: ".sheet-body",
         initial: "attributes"
-      }]
+      }],
+      // This ensures data is submitted on change rather than requiring a submit button
+      submitOnChange: true,
+      // This makes sure we don't close on submit
+      closeOnSubmit: false
     });
   }
 
   /** @override */
   getData() {
-    const data = super.getData();
+    // Get the basic data
+    const context = super.getData();
+    const actorData = this.actor.toObject(false);
 
-    // Initialize data structures if needed
-    if (!data.system) data.system = {};
-    if (!data.system.abilities) data.system.abilities = {};
-    if (!data.system.details) data.system.details = {};
-    if (!data.system.combat) data.system.combat = {};
-    if (!data.system.saves) data.system.saves = {};
-    if (!data.system.wealth) data.system.wealth = {};
+    // Add the actor's data to context.system for easier access
+    context.system = actorData.system;
+
+    // Prepare character data and items
+    if (actorData.type === 'character') {
+      this._prepareItems(context);
+      this._prepareCharacterData(context);
+    }
 
     // Add dark mode class if setting is enabled
-    // Note: We'll handle classList in the render method instead since element might not exist yet
     this._darkMode = game.settings.get("add2e", "useDarkMode");
 
-    // Prepare spell lists by level
-    if (data.actor.type === "character") {
-      data.spellLevels = {};
+    // Add roll data for TinyMCE editors to use
+    context.rollData = context.actor.getRollData();
 
-      // Get all spells
-      const spells = data.items.filter(item => item.type === "spell");
+    return context;
+  }
 
-      // Group spells by level
-      for (let spell of spells) {
-        let lvl = 0;
-        if (spell.system && spell.system.level) {
-          lvl = spell.system.level;
-        }
-        if (!data.spellLevels[lvl]) data.spellLevels[lvl] = [];
-        data.spellLevels[lvl].push(spell);
+  /**
+   * Organize and classify Items for Character sheets.
+   *
+   * @param {Object} context The actor data being prepared.
+   * @private
+   */
+  _prepareItems(context) {
+    // Initialize containers
+    const weapons = [];
+    const equipment = [];
+    const armor = [];
+    const proficiencies = {
+      weapon: [],
+      nonweapon: []
+    };
+    const spells = {};
+
+    // Iterate through items, allocating to containers
+    for (let i of context.items) {
+      // Set item data
+      i.img = i.img || DEFAULT_TOKEN;
+
+      // Sort items by type
+      if (i.type === 'weapon') {
+        weapons.push(i);
       }
-
-      // Sort spell levels
-      for (let lvl in data.spellLevels) {
-        data.spellLevels[lvl].sort((a, b) => a.name.localeCompare(b.name));
+      else if (i.type === 'equipment') {
+        equipment.push(i);
+      }
+      else if (i.type === 'armor') {
+        armor.push(i);
+      }
+      else if (i.type === 'proficiency') {
+        if (i.system.type === 'weapon') proficiencies.weapon.push(i);
+        else proficiencies.nonweapon.push(i);
+      }
+      else if (i.type === 'spell') {
+        if (!spells[i.system.level]) spells[i.system.level] = [];
+        spells[i.system.level].push(i);
       }
     }
 
-    return data;
+    // Sort spells by level
+    for (let level in spells) {
+      spells[level].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    // Assign to context
+    context.weapons = weapons;
+    context.equipment = equipment;
+    context.armor = armor;
+    context.proficiencies = proficiencies;
+    context.spellLevels = spells;
   }
 
-  /** @override */
-  render(force = false, options = {}) {
-    // Call the parent render method but don't try to manipulate the element yet
-    return super.render(force, options);
+  /**
+   * Prepare Character type specific data
+   * @param {Object} context The actor data being prepared.
+   * @private
+   */
+  _prepareCharacterData(context) {
+    // Make modifications to data here that depend on character data fields
+    // For example, you might compute derived values or modify properties for display
   }
 
   /** @override */
@@ -83,9 +128,6 @@ export class ADD2ECharacterSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Make sure we manually add our tab listeners
-    html.find('.sheet-tabs .item').click(this._onTabClick.bind(this));
-
     // Add roll listeners
     html.find('.ability-score').click(this._onAbilityRoll.bind(this));
     html.find('.save').click(this._onSavingThrowRoll.bind(this));
@@ -96,47 +138,64 @@ export class ADD2ECharacterSheet extends ActorSheet {
     html.find('.item-edit').click(this._onItemEdit.bind(this));
     html.find('.item-delete').click(this._onItemDelete.bind(this));
 
-    // Everything below here is only needed if the sheet is editable
-    if (!this.isEditable) return;
+    // Add specific listeners for form inputs to ensure they update immediately
+    if (this.isEditable) {
+      // Checkbox changes
+      html.find('input[type="checkbox"]').change(this._onChangeCheckbox.bind(this));
 
-    // Make sure we activate the initial tab
-    const activeTab = html.find('.sheet-tabs .item.active').data('tab');
-    if (activeTab) {
-      this._activateTab(activeTab);
-    } else {
-      this._activateTab('attributes');
+      // Make sure numeric inputs are properly handled
+      html.find('input[type="number"]').change(this._onChangeInput.bind(this));
     }
   }
 
   /**
-   * Handle tab clicks manually
+   * Handle checkbox changes to immediately update the actor
+   * @param {Event} event The originating change event
+   * @private
    */
-  _onTabClick(event) {
+  _onChangeCheckbox(event) {
     event.preventDefault();
-    const tab = event.currentTarget.dataset.tab;
-    this._activateTab(tab);
+    const checkbox = event.currentTarget;
+    const field = checkbox.name;
+
+    // Create update data with the checkbox value
+    const updateData = {};
+    updateData[field] = checkbox.checked;
+
+    // Update the actor
+    return this.actor.update(updateData);
   }
 
   /**
-   * Activate a tab
+   * Handle input changes to ensure numbers are properly processed
+   * @param {Event} event The originating change event
+   * @private
    */
-  _activateTab(tabName) {
-    if (!this.element) return;
+  _onChangeInput(event) {
+    event.preventDefault();
+    const input = event.currentTarget;
+    const field = input.name;
+    let value = input.value;
 
-    // Update the tab navigation
-    this.element.find('.sheet-tabs .item').removeClass('active');
-    this.element.find(`.sheet-tabs .item[data-tab="${tabName}"]`).addClass('active');
+    // Make sure numeric values are treated as numbers
+    if (input.type === "number") {
+      value = Number(value);
+    }
 
-    // Update the tab content
-    this.element.find('.tab-content').removeClass('active');
-    this.element.find(`.tab-content[data-tab="${tabName}"]`).addClass('active');
+    // Create update data with the input value
+    const updateData = {};
+    updateData[field] = value;
 
-    console.log(`ADD2E | Tab activated: ${tabName}`);
+    // Log the update for debugging
+    console.log(`Updating ${field} to ${value}`);
+
+    // Update the actor
+    return this.actor.update(updateData);
   }
 
   /**
    * Handle creating a new Item
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onItemCreate(event) {
@@ -151,7 +210,7 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /**
    * Handle editing an existing Item
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onItemEdit(event) {
@@ -166,7 +225,7 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /**
    * Handle deleting an Item
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onItemDelete(event) {
@@ -195,7 +254,7 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /**
    * Handle ability score rolls
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onAbilityRoll(event) {
@@ -251,7 +310,7 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /**
    * Handle saving throw rolls
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onSavingThrowRoll(event) {
@@ -294,7 +353,7 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /**
    * Handle attack rolls
-   * @param {Event} event
+   * @param {Event} event The originating click event
    * @private
    */
   _onAttackRoll(event) {
@@ -334,8 +393,10 @@ export class ADD2ECharacterSheet extends ActorSheet {
 
   /** @override */
   async _updateObject(event, formData) {
-    // Handle the core update
-    console.log("ADD2E | _updateObject called with formData:", formData);
+    // Log the data being saved for debugging
+    console.log("ADD2E | Updating character with form data:", formData);
+
+    // Don't interfere with the standard Foundry update process
     return super._updateObject(event, formData);
   }
 }

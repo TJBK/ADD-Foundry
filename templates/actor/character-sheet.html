@@ -26,9 +26,9 @@
     </div>
   </header>
 
-  <!-- Navigation Tabs -->
+  <!-- Navigation Tabs - Note data-group attribute matches the one in sheet-body -->
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item active" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="attributes">Attributes</a>
     <a class="item" data-tab="combat">Combat</a>
     <a class="item" data-tab="inventory">Inventory</a>
     <a class="item" data-tab="proficiencies">Proficiencies</a>
@@ -36,10 +36,10 @@
     <a class="item" data-tab="notes">Notes</a>
   </nav>
 
-  <!-- Sheet Body -->
+  <!-- Sheet Body - Contains tabs -->
   <section class="sheet-body">
-    <!-- Attributes Tab -->
-    <div class="tab-content active" data-tab="attributes">
+    <!-- Use Foundry's tab system: class="tab" instead of "tab-content" -->
+    <div class="tab" data-group="primary" data-tab="attributes">
       <!-- Ability Scores -->
       <div class="ability-scores">
         <!-- STR -->
@@ -138,7 +138,7 @@
     </div>
 
     <!-- Combat Tab -->
-    <div class="tab-content" data-tab="combat">
+    <div class="tab" data-group="primary" data-tab="combat">
       <!-- Combat Stats -->
       <div class="combat-stats">
         <!-- HP -->
@@ -245,7 +245,7 @@
     </div>
 
     <!-- Inventory Tab -->
-    <div class="tab-content" data-tab="inventory">
+    <div class="tab" data-group="primary" data-tab="inventory">
       <!-- Wealth -->
       <div class="wealth-section">
         <h3 class="section-header">Currency</h3>
@@ -319,7 +319,7 @@
     </div>
 
     <!-- Proficiencies Tab -->
-    <div class="tab-content" data-tab="proficiencies">
+    <div class="tab" data-group="primary" data-tab="proficiencies">
       <!-- Weapon Proficiencies -->
       <h3 class="section-header">Weapon Proficiencies</h3>
       <ol class="items-list">
@@ -356,7 +356,7 @@
     </div>
 
     <!-- Spells Tab -->
-    <div class="tab-content" data-tab="spells">
+    <div class="tab" data-group="primary" data-tab="spells">
       <!-- Spell Levels -->
       {{#each spellLevels as |spellLevel lvl|}}
       <div class="spell-level">
@@ -378,7 +378,7 @@
     </div>
 
     <!-- Notes Tab -->
-    <div class="tab-content" data-tab="notes">
+    <div class="tab" data-group="primary" data-tab="notes">
       <h3 class="section-header">Biography</h3>
       <textarea name="system.details.biography">{{system.details.biography}}</textarea>
 
